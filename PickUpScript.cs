@@ -119,7 +119,7 @@ public class PickUpScript : MonoBehaviour
         heldObj.layer = 0;
         heldObjRb.isKinematic = false;
         heldObj.transform.parent = null;
-        heldObjRb.AddForce(transform.forward * 1000);
+        heldObjRb.AddForce(transform.forward * throwForce);
         heldObj = null;
     }
     void StopClipping() //function only called when dropping/throwing
