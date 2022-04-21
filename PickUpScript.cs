@@ -12,7 +12,7 @@ public class PickUpScript : MonoBehaviour
     private float rotationSensitivity = 1f; //how fast/slow the object is rotated in relation to mouse movement
     private GameObject heldObj; //object which we pick up
     private Rigidbody heldObjRb; //rigidbody of object we pick up
-    private bool canThrow = true; //this is needed so we don't throw when rotating the object
+    private bool canDrop = true; //this is needed so we don't throw/drop object when rotating the object
     private int LayerNumber; //layer index
 
     //Reference to script which includes mouse movement of player (looking around)
@@ -45,15 +45,18 @@ public class PickUpScript : MonoBehaviour
             }
             else
             {
-                StopClipping(); //prevents object from clipping through walls
-                DropObject();
+                if(canDrop == true)
+                {
+                    StopClipping(); //prevents object from clipping through walls
+                    DropObject();
+                }
             }
         }
         if (heldObj != null) //if player is holding object
         {
             MoveObject(); //keep object position at holdPos
             RotateObject();
-            if (Input.GetKeyDown(KeyCode.Mouse0) && canThrow == true) //Mous0 (leftclick) is used to throw, change this if you want another button to be used)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && canDrop == true) //Mous0 (leftclick) is used to throw, change this if you want another button to be used)
             {
                 StopClipping();
                 ThrowObject();
@@ -92,7 +95,7 @@ public class PickUpScript : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.R))//hold R key to rotate, change this to whatever key you want
         {
-            canThrow = false; //make sure throwing can't occur during rotating
+            canDrop = false; //make sure throwing can't occur during rotating
 
             //disable player being able to look around
             //mouseLookScript.verticalSensitivity = 0f;
@@ -109,7 +112,7 @@ public class PickUpScript : MonoBehaviour
             //re-enable player being able to look around
             //mouseLookScript.verticalSensitivity = originalvalue;
             //mouseLookScript.lateralSensitivity = originalvalue;
-            canThrow = true;
+            canDrop = true;
         }
     }
     void ThrowObject()
